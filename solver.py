@@ -122,20 +122,21 @@ def solve(problem_type, objective_function, constraints_left, constraints_right,
 
     # Default bounds array: a 2d array with len(obj) # of rows, where each row is [0, None]
     # Excel translation: by default, enable 'Make Unconstrained Vars Non-Negative'
-    bounds = np.repeat([[0, None]], len(obj), axis=0)
+    if not bounds:
+        bounds = np.repeat([[0, None]], len(obj), axis=0)
 
-    # The "[:,x]" used below sets column x of each row to the given scalar
-    if make_unconstrained_non_negative == False:
-        bounds[:,0] = None
+        # The "[:,x]" used below sets column x of each row to the given scalar
+        if make_unconstrained_non_negative == False:
+            bounds[:,0] = None
 
-    if minimum_for_all:
-        bounds[:,0] = minimum_for_all
+        if minimum_for_all:
+            bounds[:,0] = minimum_for_all
 
-    if maximum_for_all:
-        bounds[:,1] = maximum_for_all
+        if maximum_for_all:
+            bounds[:,1] = maximum_for_all
 
-    # Convert bounds 2d array to list of tuples
-    bounds = [tuple(x) for x in bounds]
+        # Convert bounds 2d array to list of tuples
+        bounds = [tuple(x) for x in bounds]
 
     # Reverse coefficient +/- sign for maximization problem
     if problem_type == "max":
