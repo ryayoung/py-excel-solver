@@ -159,3 +159,5 @@ def solve(problem_type, objective_function, constraints_left, constraints_right,
     solution = linprog(obj, A_ub=c_l, b_ub=c_r, A_eq=equalities_left, b_eq=equalities_right, bounds=bounds, method=method)
 
     print_results(solution, problem_type)
+    
+    return solution
