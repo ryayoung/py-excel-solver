@@ -29,6 +29,10 @@ def errors(obj, c_l, c_r, signs, problem_type):
     if not (problem_type == "max" or problem_type == "min"):
         print("Please choose 'max' or 'min' for the problem type")
         errors += 1
+    
+    if ">" in signs or "<" in signs:
+        print("Use of '<' and '>' prohibited. Use '<=' or '>=' instead.")
+        errors += 1
 
     # ---------------------
     if errors > 0:
