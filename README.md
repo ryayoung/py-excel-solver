@@ -2,20 +2,33 @@
 
 A wrapper that uses Scipy's ```linprog()``` function to emulate the UI of Excel's Solver. It's supposed to be extremely easy to use. If you've set up a simple optimization problem in Excel, just copy and paste the values into the function below and get the same output.
 
-#### Rules:
+<details>
+  <summary><i><b>Rules:</b></i></summary>
+
 - All matrix constraints must be able to be stated with a SUMPRODUCT() in Excel. Instead of passing the sumproduct cell as a constraint like you would in Excel, here you need to pass the constraint matrix itself (see ```constraints_left``` param below), and the function will take care of the math.
+</details>
 
-#### Why use this?
+<details>
+  <summary><i><b>Why use this?</b></i></summary>
+
 - It's easy. Very easy. You can simply copy paste from excel into the function. You even get to use the "Make Unconstrained Variables Non-Negative" button, like you would in Excel.
+</details>
 
-#### Extra features you don't get in Excel Solver
+<details>
+  <summary><i><b>Extra features you don't get in Excel Solver</b></i></summary>
+    
 - With a single-integer assignment, you can set the ```minimum_for_all``` and/or ```maximum_for_all``` constraints to set an upper and/or lower bound for all the decision variables at once.
 - You don't have to calculate objective function or matrix sumproduct constraints yourself.
 - Objective function is set up and displayed for you in the output. Ex: ```MINIMIZE: z = 16a - 20.5b + 14c```.
 - Choose from a variety of solve methods not offered in Excel.
+</details>
 
-#### Why not just use Scipy ```linprog()```?
-- Scipy's ```linprog()``` is very hard to use if you're coming from Excel. It does NOT let you pick between maximize and minimize like you would in Excel, and it does not let you specify inequality signs (>= <=) for constraints. And, if you want to assert equalities as constraints, you have to pass them as a completely separate matrix/vector pair in the function. As a result, using scipy's function requires you to manipulate many of your values ahead of time in a way that makes your code impossible to read and interpret.
+<details>
+  <summary><i><b>Why not just use scipy.optimize.linprog()?</b></i></summary>
+
+- Scipy's ```linprog()``` is very hard to use if you're coming from Excel. It does NOT let you pick between maximize and minimize like you would in Excel, and it does not let you specify inequality signs (>= <=) for constraints. And, if you want to assert equalities as constraints, you have to pass them as a completely separate matrix/vector pair in the function. As a result, using scipy linprog() requires that you manipulate many of your values ahead of time in a way that makes your code impossible to read and interpret.
+</details>
+
 
 ### Example 1
 Solved in Excel:
