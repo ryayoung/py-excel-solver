@@ -119,10 +119,9 @@ def solve(problem_type, objective_function, constraints_left, constraints_right,
     # Pretty-print the objective function
     print_objective_function(obj, problem_type)
 
-
-    # Default bounds array: a 2d array with len(obj) # of rows, where each row is [0, None]
-    # Excel translation: by default, enable 'Make Unconstrained Vars Non-Negative'
     if not bounds:
+        # Default bounds array: a 2d array with len(obj) # of rows, where each row is [0, None]
+        # Excel translation: by default, enable 'Make Unconstrained Vars Non-Negative'
         bounds = np.repeat([[0, None]], len(obj), axis=0)
 
         # The "[:,x]" used below sets column x of each row to the given scalar
