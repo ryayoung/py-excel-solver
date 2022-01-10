@@ -43,6 +43,7 @@ def errors(obj, c_l, c_r, signs, problem_type):
 def print_objective_function(obj, problem_type):
     """
     Example:
+        (given: [16, -20.5, 14]) output:
         --------------------------------
         MINIMIZE: z = 16a - 20.5b + 14c
         --------------------------------
