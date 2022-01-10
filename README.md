@@ -119,7 +119,7 @@ Optimization terminated successfully.
 
 #### Now, let's try switching the 2nd constraint in the previous problem from '<= 2000' to '= 1984'. If you were using Scipy, this wouldn't be possible without making two new separate arrays to store this constraint.
 
-NOTE: This is _not_ necessary, but I've re-ordered the constraint to put the equality on the bottom. You can have them in any order you like.
+NOTE: This is _NOT_ necessary, but I've re-ordered the constraints so the equality is on the bottom. You can have them in any order you like.
 #### Code
 ```python
 import solver
