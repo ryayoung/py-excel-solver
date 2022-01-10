@@ -7,7 +7,7 @@ A wrapper that uses Scipy's ```linprog()``` function to emulate the UI of Excel'
   
 1. Download ```solver.py``` (click 'raw' view, then right click, Save As)
 2. ```import solver```, then follow the format of the implementations below
-3. Optional: download ```test-code.py``` and execute it from same folder as solver.py to test it out.
+3. Optional: download ```example-code.py``` and execute it from same folder as solver.py to test it out.
   
 Params for ```solver.solve()```:
 - _problem_type:_ Required. Specify "max" or "min"
