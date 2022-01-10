@@ -3,6 +3,26 @@
 A wrapper that uses Scipy's ```linprog()``` function to emulate the UI of Excel's Solver. It's supposed to be extremely easy to use. If you've set up a simple optimization problem in Excel, just copy and paste the values into the function below and get the same output.
 
 <details>
+  <summary><i><b>How to use</b></i></summary>
+  
+1. Download ```solver.py``` (click 'raw' view, then right click, Save As)
+2. ```import solver```, then follow the format of the implementations below
+3. Optional: download ```test-code.py``` and execute it from same folder as solver.py to test it out.
+  
+Params for ```solver.solve()```:
+- _problem_type:_ Required. Specify "max" or "min"
+- _objective_function:_ Required. List of coefficients.
+- _constraints_left:_ Required. Constraint matrix, where columns correspond to objective function coefficients. Can be 2d list or np arr.
+- _constraints_right:_ Required. These are constraint vectors used to make the comparison.
+- _constraints_signs:_ Required. A list of signs corresponding to your constraints. Allowed: ```>=, <=, =```
+- _make_unconstrained_non_negative:_ (optional) Just like the button in Excel. Setting this to False is the same as setting minimum_for_all to None.
+- _minimum_for_all:_ (optional) Set the lower limit for all decision variables.
+- _maximum_for_all:_ (optional) Set the upper limit for all decision variables.
+- _bounds:_ (optional) default None. Use this to specify custom bounds for each var individually. Pass an array of tuples [(), (), etc.].
+- _method:_ (optional) default simplex. You can pass any of the ones listed in Scipy documentation.
+</details>
+
+<details>
   <summary><i><b>Rules:</b></i></summary>
 
 - All matrix constraints must be able to be stated with a SUMPRODUCT() in Excel. Instead of passing the sumproduct cell as a constraint like you would in Excel, here you need to pass the constraint matrix itself (see ```constraints_left``` param below), and the function will take care of the math.
