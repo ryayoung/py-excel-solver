@@ -2,11 +2,7 @@
 
 A wrapper that uses Scipy's ```linprog()``` function to emulate the UI of Excel's Solver. It's supposed to be extremely easy to use. If you've set up a simple optimization problem in Excel, just copy and paste the values into the function below and get the same output.
 
-#### [Source code](https://github.com/ryayoung/py-excel-solver)
-
-<br>
-
-> 
+<!-- #### [Source code](https://github.com/ryayoung/py-excel-solver) -->
 
 <br>
 
