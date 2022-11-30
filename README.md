@@ -1,6 +1,21 @@
-# python-solver
+<h1> py-excel-solver &nbsp;&nbsp;&nbsp; <a href="https://pypi.org/project/excel-solver/" alt="Version"> <img src="https://img.shields.io/pypi/v/excel-solver.svg" /></a> </h1>
 
 A wrapper that uses Scipy's ```linprog()``` function to emulate the UI of Excel's Solver. It's supposed to be extremely easy to use. If you've set up a simple optimization problem in Excel, just copy and paste the values into the function below and get the same output.
+
+#### [Source code](https://github.com/ryayoung/py-excel-solver)
+
+<br>
+
+> 
+
+<br>
+
+## Install
+
+```text
+pip install excel_solver
+```
+---
 
 <details>
   <summary><i><b>How to use</b></i></summary>
@@ -20,6 +35,7 @@ Params for ```solver.solve()```:
 - _maximum_for_all:_ (optional) Set the upper limit for all decision variables.
 - _bounds:_ (optional) default None. Use this to specify custom bounds for each var individually. Pass an array of tuples [(), (), etc.].
 - _method:_ (optional) default simplex. You can pass any of the ones listed in Scipy documentation.
+- _display_result:_ (optional) default True
 </details>
 
 <details>
@@ -98,7 +114,8 @@ c:  1.35322
 d:  0.1
 e:  0.1
 ------------------------------------------------------
-Optimization terminated successfully.
+Optimization terminated successfully. (HiGHS Status 7: Optimal)
+
 ```
 
 ### Example 2
@@ -146,7 +163,7 @@ a:  0
 b:  160
 c:  120
 ------------------------------------------------------
-Optimization terminated successfully.
+Optimization terminated successfully. (HiGHS Status 7: Optimal)
 ```
 
 #### Now, let's try switching the 2nd constraint in the previous problem from '<= 2000' to '= 1984'. If you were using Scipy, this wouldn't be possible without making two new separate arrays to store this constraint.
@@ -192,6 +209,5 @@ a:  0
 b:  176
 c:  96
 ------------------------------------------------------
-Optimization terminated successfully.
+Optimization terminated successfully. (HiGHS Status 7: Optimal)
 ```
-

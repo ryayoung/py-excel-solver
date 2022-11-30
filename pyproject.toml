@@ -1,0 +1,46 @@
+[build-system]
+# requires: list of packages needed to build my package
+requires = ["hatchling"]
+# build-backend: name of the python object that frontends use to perform build
+build-backend = "hatchling.build"
+
+[project]
+name = "excel-solver"
+version = "0.0.0"
+requires-python = ">=3.10"
+
+description = ""
+
+readme = "README.md"
+license = { file = "LICENSE" }
+
+authors = [
+    { name = "Ryan Young", email = "dev@ryayoung.com" },
+]
+
+maintainers = [
+    { name = "Ryan Young", email = "dev@ryayoung.com" },
+]
+
+dependencies = [
+	"scipy",
+]
+
+classifiers = [
+	"License :: OSI Approved :: MIT License",
+	"Programming Language :: Python :: 3.10",
+	"Environment :: Console",
+	"Operating System :: OS Independent",
+	"Intended Audience :: Science/Research",
+	"Topic :: Scientific/Engineering",
+]
+
+keywords = [
+	"",
+]
+
+
+[project.urls]
+# "Homepage" = "https://excel_solver.com"
+"Documentation" = "https://github.com/ryayoung/py-excel-solver"
+"Source Code" = "https://github.com/ryayoung/py-excel-solver"

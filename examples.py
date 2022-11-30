@@ -25,7 +25,6 @@ solver.solve(
 
 print("Problem #2:")
 
-import solver
 solver.solve(
     problem_type = "max",
     objective_function = [
@@ -78,7 +77,6 @@ solver.solve(
     minimum_for_all=0.1,
 )
 
-import solver
 solver.solve(
     problem_type = "max",
     objective_function = [

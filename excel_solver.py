@@ -1,22 +1,25 @@
 # Maintainer:     Ryan Young
-# Last Modified:  Jan 09, 2022
+# Last Modified:  Nov 30, 2022
+from typing import Iterable
 import numpy as np
-from scipy.optimize import linprog
+from scipy.optimize import linprog, OptimizeResult
 
 """
-
-This is a wrapper that makes scipy's linear programming function act like Solver
-In other words, this is the closest thing to excel solver in python that exists.
-
+A wrapper for scipy's linear programming function to act like Excel Solver
 """
 
-def errors(obj, c_l, c_r, signs, problem_type):
+def validate(
+    obj: list | np.ndarray,
+    c_l: list[list] | np.ndarray,
+    c_r: list | np.ndarray,
+    signs: list | np.ndarray,
+    problem_type: str,
+) -> None:
     """
     Helps debug common errors in user code.
     Returns True if any errors present.
     """
     errors = 0
-    # ---------------------
 
     if not len(obj) == len(c_l[0]):
         print(f"Your objective function has {len(obj)} coefficients, but you passed {len(c_l[0])} coefficients in your constraints matrix (c_l).")
@@ -29,27 +32,29 @@ def errors(obj, c_l, c_r, signs, problem_type):
     if not (problem_type == "max" or problem_type == "min"):
         print("Please choose 'max' or 'min' for the problem type")
         errors += 1
-    
+
     if ">" in signs or "<" in signs:
         print("Use of '<' and '>' prohibited. Use '<=' or '>=' instead.")
         errors += 1
 
-    # ---------------------
     if errors > 0:
-        return True
-    return False
+        raise ValueError("Invalid model")
 
 
-def print_objective_function(obj, problem_type):
+def print_objective_function(
+    obj: list | np.ndarray, problem_type: str
+) -> None:
     """
-    Example:
-        (given: [16, -20.5, 14]) output:
-        --------------------------------
-        MINIMIZE: z = 16a - 20.5b + 14c
-        --------------------------------
+    >>> print_objective_function([16, -20.5, 14], "max")
+    ------------------------------------------------------
+    MAXIMIZE: z = 16a - 20.5b + 14c
+    ------------------------------------------------------
     """
     alphabet = "abcdefghijklmnopqrstuvwxyz"
     print('------------------------------------------------------')
+
+    if isinstance(obj, list):
+        obj = np.array(obj)
 
     if problem_type == "max":
         print("MAXIMIZE: z = ", end="")
@@ -73,8 +78,12 @@ def print_objective_function(obj, problem_type):
     print('\n------------------------------------------------------')
 
 
-def print_results(solution, ptype):
-    # Print results
+def print_results(
+    solution: OptimizeResult, ptype: str
+) -> None:
+    """
+    Print results
+    """
     np.set_printoptions(precision=2, suppress=True)
     optimal = round(solution.fun, ndigits=2)
     if optimal % 1 == 0:
@@ -96,20 +105,67 @@ def print_results(solution, ptype):
     print("------------------------------------------------------")
     # print(f"Iterations: {solution.nit}")
     print(solution.message)
-    print("\n")
 
 
 
-def solve(problem_type, objective_function, constraints_left, constraints_right, constraints_signs, make_unconstrained_non_negative=True, minimum_for_all=None, maximum_for_all=None, bounds=None, method="simplex"):
-
+def solve(
+    problem_type: str,
+    objective_function: list | np.ndarray,
+    constraints_left: list[list] | np.ndarray,
+    constraints_right: list | np.ndarray,
+    constraints_signs: list | np.ndarray,
+    make_unconstrained_non_negative: bool = True,
+    minimum_for_all: int | float = None,
+    maximum_for_all: int | float = None,
+    bounds: np.ndarray | None = None,
+    method: str = "highs",
+    display_result: bool = True,
+) -> OptimizeResult | None:
     """
-    Main function that translates the Solver-like input into a scipy 'linprog()' call.
+    Translates the Solver-like input into a scipy 'linprog()' call.
 
-    Note: The very long parameter names help suggestions in an IDE, and readability in use.
+    >>> solve(
+    ...     problem_type = "min",
+    ...     objective_function = [
+    ...         10, 15, 25
+    ...     ],
+    ...     constraints_left = [
+    ...         [1,  1,  1],
+    ...         [1, -2,  0],
+    ...         [0,  0,  1],
+    ...     ],
+    ...     constraints_right = [
+    ...         1000,
+    ...         0,
+    ...         340,
+    ...     ],
+    ...     constraints_signs = [
+    ...         ">=",
+    ...         ">=",
+    ...         ">=",
+    ...     ],
+    ...     make_unconstrained_non_negative = True
+    ... )
+    ------------------------------------------------------
+    MINIMIZE: z = 10a + 15b + 25c
+    ------------------------------------------------------
+    OPTIMAL VALUE:  15100
+    ------------------------------------------------------
+    QUANTITIES:
+    a:  660
+    b:  0
+    c:  340
+    ------------------------------------------------------
+    Optimization terminated successfully. (HiGHS Status 7: Optimal)
     """
 
-    if errors(objective_function, constraints_left, constraints_right, constraints_signs, problem_type):
-        return
+    validate(
+        obj=objective_function,
+        c_l=constraints_left,
+        c_r=constraints_right,
+        signs=constraints_signs,
+        problem_type=problem_type
+    )
 
     # convert to numpy so we can multiply by scalars
     obj = np.array(objective_function)
@@ -141,7 +197,7 @@ def solve(problem_type, objective_function, constraints_left, constraints_right,
     # Reverse coefficient +/- sign for maximization problem
     if problem_type == "max":
         obj *= -1
-    
+
     # Reverse constraint +/- sign where inequality is ">="
     c_r[signs == ">="] *= -1
     c_l[signs == ">="] *= -1
@@ -157,8 +213,22 @@ def solve(problem_type, objective_function, constraints_left, constraints_right,
         equalities_right = None
 
     # Solve linear programming problem
-    solution = linprog(obj, A_ub=c_l, b_ub=c_r, A_eq=equalities_left, b_eq=equalities_right, bounds=bounds, method=method)
+    solution = linprog(
+        obj,
+        A_ub=c_l,
+        b_ub=c_r,
+        A_eq=equalities_left,
+        b_eq=equalities_right,
+        bounds=bounds,
+        method=method
+    )
 
-    print_results(solution, problem_type)
-    
-    return solution
+    if display_result == True:
+        print_results(solution, problem_type)
+    else:
+        return solution
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
